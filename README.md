@@ -1,44 +1,51 @@
-# Secure In-Memory Caching Service
+# High-Performance & Secure Distributed Caching Service
 
 [![Language](https://img.shields.io/badge/Language-Python-blue.svg)](https://www.python.org/)
-[![Category](https://img.shields.io/badge/Category-Network%20Security-red.svg)]()
+[![Category](https://img.shields.io/badge/Category-Backend%20&%20Security-purple.svg)]()
 
-This project is a hands-on implementation of a high-performance, in-memory caching service (similar to Redis) with a primary focus on **network security**. The goal is to design and build a custom client-server protocol where all data transmitted after the initial handshake is encrypted, protecting it from eavesdropping.
+This is an educational project to build a high-performance, in-memory key-value caching service from scratch in Python. The goal is to explore the intersection of **high-performance backend systems** (inspired by Redis) and the **network security principles** required to protect them in a distributed environment.
 
 ## Project Vision & Goals
 
-This project explores the intersection of backend systems and security by focusing on:
-1.  **Secure Protocol Design:** Creating a simple, stateful protocol for client-server communication.
-2.  **Data Confidentiality:** Ensuring that all cache data (keys and values) is encrypted while in transit.
-3.  **Concurrency:** Building a server capable of handling multiple simultaneous client connections reliably.
-4.  **Performance:** Using efficient data structures for fast key-value lookups.
+The vision is to create a reliable and fast caching layer suitable for scalable web applications, while ensuring data confidentiality and integrity. The key learning objectives are:
+1.  **Concurrency & Performance:** Build a multi-threaded server capable of handling multiple simultaneous client connections without data corruption, using thread-safe data structures for fast read/write operations.
+2.  **Network Security:** Design and implement a simple, encrypted client-server protocol to protect all data in transit from eavesdropping.
+3.  **Protocol Design:** Implement a robust, text-based command protocol for client-server interaction (e.g., SET, GET, DELETE).
+4.  **Low-Level Networking:** Master server and client communication using Python's `socket` library.
 
 ## Planned Features & Architecture
 
-### Phase 1: Core Caching & Server Logic
--   [ ] Implement a basic TCP socket server that can listen for and accept client connections.
--   [ ] Use a Python dictionary as the in-memory key-value store.
--   [ ] Implement basic commands: `SET <key> <value>`, `GET <key>`, `DELETE <key>`.
+The service is being built incrementally in distinct phases:
 
-### Phase 2: Secure Communication Protocol
--   [ ] Design a simple, custom protocol format (e.g., `[OP_CODE]|[PAYLOAD_LENGTH]|[ENCRYPTED_PAYLOAD]`).
--   [ ] Utilize the `cryptography` library (specifically Fernet symmetric encryption) to secure the payload.
--   [ ] Implement a secure handshake where the server and client establish a shared secret session key for encryption.
+### Phase 1: Core Single-Client Server
+-   [x] **Status: Complete**
+-   [x] Implement a basic TCP socket server to handle a single client.
+-   [x] Use a Python dictionary as the in-memory store for basic `SET`, `GET`, and `DELETE` commands.
 
-### Phase 3: Concurrent Client Handling
--   [ ] Re-architect the server to use Python's `threading` or `asyncio` library.
--   [ ] Ensure the caching data structure is thread-safe to prevent race conditions when multiple clients perform write operations.
+### Phase 2: Concurrent & Thread-Safe Architecture
+-   [ ] **Status: In Progress**
+-   [ ] Re-architect the server to spawn a new thread for each client connection.
+-   [ ] Implement a `threading.Lock` to ensure the core dictionary is thread-safe, preventing race conditions.
 
-### Phase 4: Authentication & Persistence (Future Goals)
--   [ ] Implement a simple token-based authentication system.
--   [ ] Add functionality to periodically save the in-memory cache to a file on disk.
+### Phase 3: Secure Protocol Implementation
+-   [ ] **Status: Planned**
+-   [ ] Integrate the `cryptography` library (Fernet) for symmetric encryption.
+-   [ ] Implement a secure handshake where the server and client establish a shared session key.
+-   [ ] Encrypt all command payloads after the handshake.
+
+### Phase 4: Advanced Features (Future Goals)
+-   [ ] Add key expiry (Time-To-Live, TTL) functionality.
+-   [ ] Implement basic data persistence to save the cache state to a file.
 
 ## Technology Stack
 *   **Language:** Python 3
-*   **Core Libraries:** `socket`, `threading` (or `asyncio`), `cryptography`
+*   **Core Libraries:** `socket`, `threading`, `cryptography`
 
 ## Current Status
-**Ongoing.** Project initialized. The basic non-threaded TCP server and client socket structures are under development.
+**Ongoing.** The foundational single-client server is functional. Development is currently focused on implementing the multi-threaded architecture to handle concurrent clients safely. The security layer is the next major planned feature.
 
-## How to Run (Instructions to come)
-_This section will be updated once the core functionality is stable._
+## How to Run
+1.  Clone the repository and install dependencies: `pip install -r requirements.txt`
+2.  Open two separate terminal windows.
+3.  In the first terminal, start the server: `python server.py`
+4.  In the second terminal, run the client: `python client.py`
